@@ -10,3 +10,8 @@ https://www.hackerrank.com/challenges/<insert_challenge_name_here>
 
 `scons`  
 `main.exe`  
+
+# Template
+
+Replace template string with challenge name: `sed -i -- 's/<insert_challenge_name_here>/replacement_name/g' *`  
+For above `sed` to work on Windows 10, make sure your user has 'Full control' permissions.
