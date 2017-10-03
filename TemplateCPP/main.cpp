@@ -19,7 +19,7 @@ void <insert_challenge_name_here>()
     // string s;
     // while (cin >> s)
     // {
-    //     candleHeights.push_back(
+    //     inputs.push_back(
     //         atoi(s.c_str()));
 
     //     if (inputs.size() >= inputsCount)
