@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 
-void insert_challenge_name_here()
+void <insert_challenge_name_here>()
 {
     // EXAMPLE: input a single integer
     // int input0;
@@ -31,6 +31,6 @@ void insert_challenge_name_here()
 
 int main()
 {
-    insert_challenge_name_here();
+    <insert_challenge_name_here>();
     return 0;
 }

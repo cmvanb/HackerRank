@@ -1,6 +1,6 @@
 # <insert_challenge_name_here>
 
-https://www.hackerrank.com/challenges/<insert_challenge_link_here>
+https://www.hackerrank.com/challenges/<insert_challenge_name_here>
 
 # Build
 
