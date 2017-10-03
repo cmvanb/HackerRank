@@ -13,7 +13,7 @@ https://www.hackerrank.com/challenges/<insert_challenge_name_here>
 
 # Template
 
-Replace template string with challenge name: 
+Replace template string with challenge name:  
     `sed -i -- 's/<insert_challenge_name_here>/replacement_name/g' main.cpp`  
     `sed -i -- 's/<insert_challenge_name_here>/replacement_name/g' README.md`  
-For above `sed` to work on Windows 10, make sure your user has 'Full control' permissions.
+For above `sed` to work on Windows 10, make sure your user has 'Full control' permissions.  
