@@ -8,25 +8,13 @@ using namespace std;
 
 void <insert_challenge_name_here>()
 {
-    // EXAMPLE: input a single integer
-    // int input0;
+    // EXAMPLE: input integers (multiple integers can be inputted on a single line as HR frequently
+    // asks for).
+    // int input0, input1, input2, input3;
     // cin >> input0;
-
-    // EXAMPLE: input multiple integers on one line
-    // vector<int> inputs;
-    // int inputsCount = 10;
-
-    // string s;
-    // while (cin >> s)
-    // {
-    //     inputs.push_back(
-    //         atoi(s.c_str()));
-
-    //     if (inputs.size() >= inputsCount)
-    //     {
-    //         break;
-    //     }
-    // }
+    // cin >> input1;
+    // cin >> input2;
+    // cin >> input3;
 }
 
 int main()
