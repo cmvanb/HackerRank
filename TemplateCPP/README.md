@@ -13,7 +13,13 @@ https://www.hackerrank.com/challenges/<insert_challenge_name_here>
 
 # Template
 
-Replace template string with challenge name:  
-    `sed -i -- 's/<insert_challenge_name_here>/replacement_name/g' main.cpp`  
-    `sed -i -- 's/<insert_challenge_name_here>/replacement_name/g' README.md`  
+Copy template directory to new directory (use dash `-` in directory name):
+    `cp -a TemplateCPP\. <challenge-name>\`  
+
+Replace template string with challenge name (use dash `-` in README.md):  
+    `sed -i -- "s/<CHALLENGE_NAME_TEMPLATE>/<challenge-name>/g" README.md`  
+
+Replace template string with challenge name (use underscore `_` in main.cpp):  
+    `sed -i -- "s/<CHALLENGE_NAME_TEMPLATE>/<challenge_name>/g" main.cpp`  
+
 For above `sed` to work on Windows 10, make sure your user has 'Full control' permissions.  
