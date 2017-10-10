@@ -9,6 +9,7 @@ using namespace std;
 
 void queens_attack_2()
 {
+    // base inputs
     int boardSizeN, obstacleCountK;
     cin >> boardSizeN;
     cin >> obstacleCountK;
@@ -17,6 +18,8 @@ void queens_attack_2()
     cin >> queenR; // y
     cin >> queenC; // x
 
+    // these vars keep track of the number of open spaces between the queen and obstacles in the 8 directions
+    // the initial values are the number of spaces to the edge of the board
     int spacesW = queenC - 1;
     int spacesE = boardSizeN - queenC;
     int spacesS = queenR - 1;
