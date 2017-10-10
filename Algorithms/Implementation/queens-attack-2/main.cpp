@@ -9,34 +9,119 @@ using namespace std;
 
 void queens_attack_2()
 {
-    int n_boardSize, k_obstacleCount;
-    cin >> n_boardSize;
-    cin >> k_obstacleCount;
+    int boardSizeN, obstacleCountK;
+    cin >> boardSizeN;
+    cin >> obstacleCountK;
 
-    int r_q, c_q;
-    cin >> r_q; // y
-    cin >> c_q; // x
+    int queenR, queenC;
+    cin >> queenR; // y
+    cin >> queenC; // x
 
-    vector<tuple<int, int>> obstacles;
+    int spacesW = queenC - 1;
+    int spacesE = boardSizeN - queenC;
+    int spacesS = queenR - 1;
+    int spacesN = boardSizeN - queenR;
+    int spacesSW = spacesW < spacesS ? spacesW : spacesS;
+    int spacesNE = spacesE < spacesN ? spacesE : spacesN;
+    int spacesNW = spacesW < spacesN ? spacesW : spacesN;
+    int spacesSE = spacesE < spacesS ? spacesE : spacesS;
 
-    for (int i = 0; i < k_obstacleCount; ++i)
+    // figure out the closest obstacles to the queen directly after they are inputted
+    for (int i = 0; i < obstacleCountK; ++i)
     {
-        int r_i, c_i;
-        cin >> r_i;
-        cin >> c_i;
+        // input obstacle position
+        int r, c;
+        cin >> r;
+        cin >> c;
+        tuple<int, int> obstacle = make_tuple(r, c);
 
-        obstacles.push_back(
-            make_tuple(r_i, c_i));
+        // calculate relative and absolute difference between obstacle and queen
+        int diffC = c - queenC;
+        int diffR = r - queenR;
+        int columnsOpenToQueen = abs(diffC) - 1;
+        int rowsOpenToQueen = abs(diffR) - 1;
+
+        // same horizontal as queen
+        if (r == queenR)
+        {
+            if (diffC < 0 
+                && columnsOpenToQueen < spacesW)
+            {
+                spacesW = columnsOpenToQueen;
+            }
+            else if (diffC > 0 
+                && columnsOpenToQueen < spacesE)
+            {
+                spacesE = columnsOpenToQueen;
+            }
+            continue;
+        }
+        // same vertical as queen
+        else if (c == queenC)
+        {
+            if (diffR < 0 
+                && rowsOpenToQueen < spacesS)
+            {
+                spacesS = rowsOpenToQueen;
+            }
+            else if (diffR > 0 
+                && rowsOpenToQueen < spacesN)
+            {
+                spacesN = rowsOpenToQueen;
+            }
+            continue;
+        }
+        // perfectly equal means obstacle falls on diagonal SW to NE
+        else if (diffC == diffR)
+        {
+            // it doesn't matter if you compare rows or columns here
+            if (diffC < 0 
+                && columnsOpenToQueen < spacesSW)
+            {
+                spacesSW = columnsOpenToQueen;
+            }
+            else if (diffC > 0 
+                && columnsOpenToQueen < spacesNE)
+            {
+                spacesNE = columnsOpenToQueen;
+            }
+            continue;
+        }
+        // equal to inverse means obstacle falls on diagonal SE to NW
+        else if (diffC == -diffR)
+        {
+            // so we use both... for aesthetic symmetry :P
+            if (diffR < 0 
+                && rowsOpenToQueen < spacesSE)
+            {
+                spacesSE = rowsOpenToQueen;
+            }
+            else if (diffR > 0 
+                && rowsOpenToQueen < spacesNW)
+            {
+                spacesNW = rowsOpenToQueen;
+            }
+            continue;
+        }
+
+        // otherwise, obstacle doesn't intersect queen's attack lines
     }
 
-    // for (auto&& o : obstacles)
-    // {
-    //     cout << get<0>(o) << ", " << get<1>(o) << endl;
-    // }
+    // add up open spaces in the eight cardinal directions to find total attackable squares
+    int attackableSquares = spacesW + spacesNW + spacesN + spacesNE + spacesE + spacesSE + spacesS + spacesSW;
 
-    // TODO: Calculate number of squares queen can attack from her position.
+    // debug output
+    // cout << "spacesW: " << spacesW << endl;
+    // cout << "spacesNW: " << spacesNW << endl;
+    // cout << "spacesN: " << spacesN << endl;
+    // cout << "spacesNE: " << spacesNE << endl;
+    // cout << "spacesE: " << spacesE << endl;
+    // cout << "spacesSE: " << spacesSE << endl;
+    // cout << "spacesS: " << spacesS << endl;
+    // cout << "spacesSW: " << spacesSW << endl;
 
-    // TODO: Output result as a single integer.
+    // final answer
+    cout << attackableSquares << endl;
 }
 
 int main()
