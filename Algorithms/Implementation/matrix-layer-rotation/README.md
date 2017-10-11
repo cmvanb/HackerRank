@@ -8,5 +8,5 @@ https://www.hackerrank.com/challenges/matrix-rotation-algo
 * Configure the scons makefile (`SConstruct`) if necessary.
 * Run the following commands:
 
-`scons`  
-`main.exe`  
+    `scons`  
+    `main.exe`  
