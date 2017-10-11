@@ -1,6 +1,6 @@
-# queens-attack-2
+# matrix-layer-rotation
 
-https://www.hackerrank.com/challenges/queens-attack-2
+https://www.hackerrank.com/challenges/matrix-rotation-algo
 
 # Build
 

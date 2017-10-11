@@ -1,0 +1,11 @@
+import os
+
+mingw_home = os.environ.get('MINGW_HOME')
+path = [ mingw_home + '\\bin' ]
+temp = 'C:\\Workspace\\TEMP'
+
+env = Environment(CXXFLAGS = '-std=c++14',
+                  ENV = { 'PATH' : path, 'TEMP' : temp },
+                  tools = [ 'mingw' ])
+
+env.Program('main.cpp')

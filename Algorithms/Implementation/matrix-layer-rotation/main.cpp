@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 
-void <CHALLENGE_NAME_TEMPLATE> ()
+void matrix_layer_rotation()
 {
     // EXAMPLE: input integers (multiple integers can be inputted on a single line as HR frequently
     // asks for).
@@ -19,6 +19,6 @@ void <CHALLENGE_NAME_TEMPLATE> ()
 
 int main()
 {
-    <CHALLENGE_NAME_TEMPLATE>();
+    matrix_layer_rotation();
     return 0;
 }
