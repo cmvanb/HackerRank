@@ -59,7 +59,7 @@ struct Matrix
         {
             int r = get_row_from_index(i);
             int c = get_column_from_index(i);
-            int shellNumber = calculate_shell_number_from_indices(r, c);
+            int shellNumber = calculate_shell_number_from_row_column(r, c);
             shellNumbers.push_back(shellNumber);
         }
 
@@ -70,7 +70,7 @@ struct Matrix
         };
     }
 
-    int calculate_shell_number_from_indices(int r, int c)
+    int calculate_shell_number_from_row_column(int r, int c)
     {
         int distanceLeft = c;
         int distanceRight = columns - 1 - c;
