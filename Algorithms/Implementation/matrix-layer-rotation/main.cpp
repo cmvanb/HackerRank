@@ -76,28 +76,54 @@ struct Matrix
         return elements[index];
     }
 
-    void rotate_once_ccw()
-    {
-        vector<int> rotatedElements;
+    // void rotate_once_ccw()
+    // {
+    //     vector<int> rotatedElements;
 
-        for (int r = 0; r < rows; ++r)
-        {
-            for (int c = 0; c < columns; ++c)
-            {
-                int rotatedElement = get_rotated_element(r, c);
-                rotatedElements.push_back(rotatedElement);
-            }
-        }
+    //     for (int r = 0; r < rows; ++r)
+    //     {
+    //         for (int c = 0; c < columns; ++c)
+    //         {
+    //             int rotatedElement = get_rotated_element(r, c);
+    //             rotatedElements.push_back(rotatedElement);
+    //         }
+    //     }
 
-        elements = rotatedElements;
-    }
+    //     elements = rotatedElements;
+    // }
+
+    // void rotate_ccw(int rotations)
+    // {
+    //     for (int i = 0; i < rotations; ++i)
+    //     {
+    //         rotate_once_ccw();
+    //     }
+    // }
 
     void rotate_ccw(int rotations)
     {
-        for (int i = 0; i < rotations; ++i)
+        // TODO: get unrolled shells
+
+        // TODO: implement
+        // foreach unrolled shell s
+            // s = rotate_shell(s, rotations);
+
+        // TODO: roll rotated shells into matrix
+    }
+
+    vector<int> rotate_shell(vector<int> shell, int rotations)
+    {
+        vector<int> rotatedShell;
+
+        int rotatedIndexOffset = rotations % shell.size();
+
+        for (int i = 0; i < shell.size(); ++i)
         {
-            rotate_once_ccw();
+            int rotatedIndex = (rotatedIndexOffset + i) % shell.size();
+            rotatedShell.push_back(shell[rotatedIndex]);
         }
+
+        return rotatedShell;
     }
 
     string to_hackerrank_string()
