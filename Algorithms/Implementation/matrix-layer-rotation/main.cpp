@@ -115,11 +115,9 @@ struct Matrix
     {
         vector<int> rotatedShell;
 
-        int rotatedIndexOffset = rotations % shell.size();
-
         for (int i = 0; i < shell.size(); ++i)
         {
-            int rotatedIndex = (rotatedIndexOffset + i) % shell.size();
+            int rotatedIndex = (rotations + i) % shell.size();
             rotatedShell.push_back(shell[rotatedIndex]);
         }
 
