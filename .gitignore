@@ -4,3 +4,6 @@
 
 # scons
 .sconsign.dblite
+
+# VS Code
+.vscode
