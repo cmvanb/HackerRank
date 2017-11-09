@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <sstream>
+#include <cassert>
 using namespace std;
 
 int divide_rounding_up(int dividend, int divisor)
@@ -28,15 +29,15 @@ struct Matrix
     int columns;
     vector<int> elements;
 
-    int get_row_from_index(int i)
-    {
-        return i / columns;
-    }
+    // int get_row_from_index(int i)
+    // {
+    //     return i / columns;
+    // }
 
-    int get_column_from_index(int i)
-    {
-        return i % columns;
-    }
+    // int get_column_from_index(int i)
+    // {
+    //     return i % columns;
+    // }
 
     int get_index_from_row_column(int r, int c)
     {
@@ -51,12 +52,22 @@ struct Matrix
     //    return min(min(c, columns - 1 - c), min(r, rows - 1 - r));
     //}
 
+    int get_shell_columns(int shellNumber)
+    {
+        return columns - (shellNumber * 2);
+    }
+
+    int get_shell_rows(int shellNumber)
+    {
+        return rows - (shellNumber * 2);
+    }
+
     int get_shell_unrolled_length(int shellNumber)
     {
-        int shellColumns = columns - (shellNumber * 2);
-        int shellRows = rows - (shellNumber * 2);
-        int shellSize = (shellColumns * 2) + (shellRows * 2) - 4;
-        return shellSize > 0 ? shellSize : 0;
+        int shellColumns = get_shell_columns(shellNumber);
+        int shellRows = get_shell_rows(shellNumber);
+        int result = (shellColumns * 2) + (shellRows * 2) - 4;
+        return result > 0 ? result : 0;
     }
 
     int get_shell_count()
@@ -64,12 +75,11 @@ struct Matrix
         return divide_rounding_up(max(rows, columns), 2);
     }
 
-    // TODO: Finish implementing algorithm. Double check math.
     vector<int> get_row_column_from_shell_index(int shellNumber, int shellIndex)
     {
         vector<int> result;
-        int shellColumns = columns - (shellNumber * 2);
-        int shellRows = rows - (shellNumber * 2);
+        int shellColumns = get_shell_columns(shellNumber);
+        int shellRows = get_shell_rows(shellNumber);
         int shellTopRightIndex = shellColumns - 1;
         int shellBottomRightIndex = shellTopRightIndex + shellRows - 1;
         int shellBottomLeftIndex = shellBottomRightIndex + shellColumns - 1;
@@ -83,60 +93,20 @@ struct Matrix
         // right column
         else if (shellIndex > shellTopRightIndex && shellIndex < shellBottomRightIndex)
         {
-            result.push_back(shellTopRightIndex + (shellIndex - shellTopRightIndex));
-            result.push_back(shellColumns - 1);
+            result.push_back(shellNumber + shellIndex - shellTopRightIndex);
+            result.push_back(shellNumber + shellColumns - 1);
         }
         // bottom row
         else if (shellIndex >= shellBottomRightIndex && shellIndex <= shellBottomLeftIndex)
         {
-            result.push_back(shellRows - 1);
-            result.push_back(shellColumns - (shellIndex - shellBottomRightIndex));
+            result.push_back(shellNumber + shellRows - 1);
+            result.push_back(shellNumber + shellColumns - 1 - (shellIndex - shellBottomRightIndex));
         }
         // left column
         else if (shellIndex > shellBottomLeftIndex)
         {
-            // TODO: Finish implementing algorithm.
-            result.push_back(-1);
+            result.push_back(shellNumber + shellRows - 1 - (shellIndex - shellBottomLeftIndex));
             result.push_back(shellNumber);
-        }
-
-        return result;
-    }
-
-    vector<int> get_shell_next_row_column(int shellNumber, int r, int c)
-    {
-        vector<int> result;
-        //int shellNumber = get_shell_number_from_row_column(r, c);
-        int shellRight = columns - 1 - shellNumber;
-        int shellBottom = rows - 1 - shellNumber;
-
-        // [r, c] is in the left-most column of the shell (excluding top-left)
-        // which means the next value comes from the element above it [r - 1, c]
-        if (c == shellNumber && r > shellNumber && r <= shellBottom)
-        {
-            result.push_back(r - 1);
-            result.push_back(c);
-        }
-        // [r, c] is in the right-most column of the shell (excluding bottom-right)
-        // which means the next value comes from the element below it [r + 1, c]
-        else if (c == shellRight && r >= shellNumber && r < shellBottom)
-        {
-            result.push_back(r + 1);
-            result.push_back(c);
-        }
-        // [r, c] is in the top-most row of the shell (excluding top-right)
-        // which means the next value comes from the element to the right [r, c + 1]
-        else if (r == shellNumber && c >= shellNumber && c < shellRight)
-        {
-            result.push_back(r);
-            result.push_back(c + 1);
-        }
-        // [r, c] is in the bottom-most row of the shell (excluding bottom-left)
-        // which means the next value comes from the element to the left [r, c - 1]
-        else if (r == shellBottom && c > shellNumber && c <= shellRight)
-        {
-            result.push_back(r);
-            result.push_back(c - 1);
         }
 
         return result;
@@ -145,18 +115,16 @@ struct Matrix
     vector<int> get_shell_elements(int shellNumber)
     {
         vector<int> result;
-        int r, c;
+        int shellLength = get_shell_unrolled_length(shellNumber);
+        vector<int> rowColumn;
 
-        for (int i = 0; i < get_shell_unrolled_length(shellNumber); ++i)
+        for (int i = 0; i < shellLength; ++i)
         {
             // Get r, c from shell index i.
-            vector<int> rowColumn = get_row_column_from_shell_index(shellNumber, i);
-
-            // Get next r, c in shell.
-            vector<int> nextRowColumn = get_shell_next_row_column(shellNumber, rowColumn[0], rowColumn[1]);
+            rowColumn = get_row_column_from_shell_index(shellNumber, i);
 
             // Add element at next r, c to elements vector.
-            int index = get_index_from_row_column(nextRowColumn[0], nextRowColumn[1]);
+            int index = get_index_from_row_column(rowColumn[0], rowColumn[1]);
             int element = elements[index];
             result.push_back(element);
         }
@@ -164,7 +132,7 @@ struct Matrix
         return result;
     }
 
-    vector<int> rotate_shell_cw(vector<int> shellElements, int rotations)
+    vector<int> rotate_shell_ccw(vector<int> shellElements, int rotations)
     {
         vector<int> rotatedShell;
 
@@ -177,12 +145,23 @@ struct Matrix
         return rotatedShell;
     }
 
-    void set_shell_elements(int shellNumber, vector<int> elements)
+    void set_shell_elements(int shellNumber, vector<int> shellElements)
     {
-        // TODO: implement
+        vector<int> rowColumn;
+
+        for (int i = 0; i < shellElements.size(); ++i)
+        {
+            // Get r, c from shell index i.
+            rowColumn = get_row_column_from_shell_index(shellNumber, i);
+
+            // Add shell element at r, c to matrix elements vector.
+            int index = get_index_from_row_column(rowColumn[0], rowColumn[1]);
+
+            elements[index] = shellElements[i];
+        }
     }
 
-    void rotate_cw(int rotations)
+    void rotate_ccw(int rotations)
     {
         for (int i = 0; i < get_shell_count(); ++i)
         {
@@ -190,10 +169,10 @@ struct Matrix
             vector<int> shellElements = get_shell_elements(i);
 
             // rotate shell
-            shellElements = rotate_shell_cw(shellElements, rotations);
+            vector<int> rotatedElements = rotate_shell_ccw(shellElements, rotations);
 
             // re-roll shell
-            set_shell_elements(i, shellElements);
+            set_shell_elements(i, rotatedElements);
         }
     }
 
@@ -326,7 +305,7 @@ void matrix_layer_rotation()
     };
 
     // rotate matrix N times
-    matrix.rotate_cw(rotations);
+    matrix.rotate_ccw(rotations);
 
     // print result
     cout << matrix.to_hackerrank_string() << endl;
