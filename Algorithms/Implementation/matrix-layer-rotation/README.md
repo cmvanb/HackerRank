@@ -10,3 +10,8 @@ https://www.hackerrank.com/challenges/matrix-rotation-algo
 
     `scons`  
     `main.exe`  
+
+# Testing custom input
+
+1. `main < input06.txt >> out.txt`
+2. Diff against output06.txt, should be identical.
