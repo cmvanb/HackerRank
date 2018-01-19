@@ -29,28 +29,10 @@ struct Matrix
     int columns;
     vector<int> elements;
 
-    // int get_row_from_index(int i)
-    // {
-    //     return i / columns;
-    // }
-
-    // int get_column_from_index(int i)
-    // {
-    //     return i % columns;
-    // }
-
     int get_index_from_row_column(int r, int c)
     {
         return (r * columns) + c;
     }
-
-    //int get_shell_number_from_row_column(int r, int c)
-    //{
-    //    // min(c, columns - 1 - c) = shortest horizontal distance to edge of matrix
-    //    // min(r, rows - 1 - c) = shortest vertical distance to edge of matrix
-    //    // whichever of the above two distances is shortest, that's the shell number. hence:
-    //    return min(min(c, columns - 1 - c), min(r, rows - 1 - r));
-    //}
 
     int get_shell_columns(int shellNumber)
     {
@@ -72,7 +54,7 @@ struct Matrix
 
     int get_shell_count()
     {
-        return divide_rounding_up(max(rows, columns), 2);
+        return divide_rounding_up(min(rows, columns), 2);
     }
 
     vector<int> get_row_column_from_shell_index(int shellNumber, int shellIndex)
@@ -163,7 +145,8 @@ struct Matrix
 
     void rotate_ccw(int rotations)
     {
-        for (int i = 0; i < get_shell_count(); ++i)
+        int shellCount = get_shell_count();
+        for (int i = 0; i < shellCount; ++i)
         {
             // unroll shell
             vector<int> shellElements = get_shell_elements(i);
@@ -205,8 +188,6 @@ struct Matrix
         return stream.str();
     }
 
-    // NOTE: Un-used functions left here for potential future usefulness.
-    /*
     string to_formatted_string()
     {
         // calculate column width, based on the order of magnitude of the biggest element
@@ -254,39 +235,40 @@ struct Matrix
         }
         return stream.str();
     }
-
-    Matrix get_shell_matrix()
-    {
-        vector<int> shellNumbers;
-
-        for (int i = 0; i < elements.size(); ++i)
-        {
-            int r = get_row_from_index(i);
-            int c = get_column_from_index(i);
-            int shellNumber = get_shell_number_from_row_column(r, c);
-            shellNumbers.push_back(shellNumber);
-        }
-
-        return {
-            rows,
-            columns,
-            shellNumbers
-        };
-    }
-    
-    */
 };
 
-void matrix_layer_rotation()
+void matrix_layer_rotation(int rows, int columns, int rotations, vector<int> elements)
 {
-    // get input
+    // initialize matrix
+    Matrix matrix = {
+        rows,
+        columns,
+        elements
+    };
+
+    // print result
+    //cout << "--- input matrix ---" << endl;
+    cout << matrix.to_hackerrank_string() << endl;
+
+    // rotate matrix N times
+    matrix.rotate_ccw(rotations);
+
+    // print result
+    //cout << "--- output matrix ---" << endl;
+    cout << matrix.to_hackerrank_string() << endl;
+}
+
+int main()
+{
+    // expected input
     int rows, columns, rotations;
+    vector<int> elements;
+
     cin >> rows;
     cin >> columns;
     cin >> rotations;
 
     // get matrix elements input
-    vector<int> elements;
     for (int i = 0; i < rows; ++i)
     {
         for (int j = 0; j < columns; ++j)
@@ -297,22 +279,6 @@ void matrix_layer_rotation()
         }
     }
 
-    // initialize matrix
-    Matrix matrix = {
-        rows,
-        columns,
-        elements
-    };
-
-    // rotate matrix N times
-    matrix.rotate_ccw(rotations);
-
-    // print result
-    cout << matrix.to_hackerrank_string() << endl;
-}
-
-int main()
-{
-    matrix_layer_rotation();
+    matrix_layer_rotation(rows, columns, rotations, elements);
     return 0;
 }
